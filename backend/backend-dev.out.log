@@ -1,0 +1,24 @@
+mode: development
+Server is runnig in port 4000
+ Database Connected 127.0.0.1
+[0mGET /api/v1/categories [32m200[0m 105.673 ms - 87[0m
+[0mGET / [33m400[0m 6.925 ms - 1203[0m
+[0mGET /api/v1 [33m400[0m 2.008 ms - 1215[0m
+[0mGET /api/v1/categories [32m200[0m 8.897 ms - 87[0m
+[0mGET /api/v1/categories [32m200[0m 18.603 ms - 87[0m
+[0mGET /api/v1/product?limit=8&sort=-ratingsAverage [32m200[0m 26.817 ms - 87[0m
+[0mGET /api/v1/categories [32m200[0m 126.090 ms - 87[0m
+[0mGET /api/v1/product?limit=8&sort=-ratingsAverage [32m200[0m 209.963 ms - 87[0m
+[0mGET /api/v1/product?limit=8&sort=-ratingsAverage [32m200[0m 29.950 ms - 87[0m
+[0mGET /api/v1/categories [32m200[0m 30.027 ms - 87[0m
+[0mGET /api/v1/product?limit=8&sort=-ratingsAverage [32m200[0m 79.374 ms - 87[0m
+[0mGET /api/v1/categories [32m200[0m 36.953 ms - 87[0m
+[0mGET /api/v1/categories [32m200[0m 10.271 ms - 87[0m
+[0mGET /api/v1/categories [36m304[0m 19.822 ms - -[0m
+[0mGET /api/v1/categories [32m200[0m 4.235 ms - 87[0m
+[0mGET /api/v1/product?keyword=&price%5Bgte%5D=0&price%5Blte%5D=5000 [32m200[0m 46.522 ms - 87[0m
+[0mGET /api/v1/product?limit=8&sort=-ratingsAverage [32m200[0m 7.199 ms - 87[0m
+[0mGET /api/v1/categories [32m200[0m 13.225 ms - 87[0m
+[0mGET /api/v1/product?limit=8&sort=-ratingsAverage [36m304[0m 11.033 ms - -[0m
+[0mGET /api/v1/categories [36m304[0m 8.724 ms - -[0m
+[0mGET /api/v1/product?limit=8&sort=-ratingsAverage [32m200[0m 17.459 ms - 87[0m
