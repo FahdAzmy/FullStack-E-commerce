@@ -3,20 +3,9 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import {
-  ShoppingBag,
-  User as UserIcon,
-  Menu,
-  LogOut,
-  Package,
-  Settings,
-  LogIn,
-  Search,
-  Heart,
-  MapPin,
-} from 'lucide-react';
-import { useAuthStore } from '@/store/auth.store';
-import { useCartStore } from '@/store/cart.store';
+import { LogOut, Menu, Package, Settings, ShoppingBag, User as UserIcon, MapPin } from 'lucide-react';
+import { Outfit, Playfair_Display } from 'next/font/google';
+import { Badge } from '@/components/ui/badge';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,12 +14,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-import { Playfair_Display, Outfit } from 'next/font/google';
+import { useAuthStore } from '@/store/auth.store';
+import { useCartStore } from '@/store/cart.store';
 
 const playfair = Playfair_Display({ subsets: ['latin'] });
 const outfit = Outfit({ subsets: ['latin'] });
+
+const navLinks = [
+  { href: '/#curated', label: 'Curation', active: (pathname: string) => pathname === '/' },
+  { href: '/products', label: 'Archive', active: (pathname: string) => pathname.startsWith('/products') },
+  { href: '/categories', label: 'Atelier', active: (pathname: string) => pathname === '/categories' },
+  { href: '/#about', label: 'About', active: () => false },
+];
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -53,144 +49,98 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`w-full top-0 sticky z-50 bg-[#fbf9f5]/80 backdrop-blur-xl border-b border-[#c4c7c7]/30 flex justify-between items-center px-5 md:px-20 py-4 transition-all duration-300 ${outfit.className}`}
+      className={`sticky top-0 z-50 flex w-full items-center justify-between border-b border-[#c4c7c7]/30 bg-[#fbf9f5]/70 px-5 py-4 text-black backdrop-blur-xl transition-all duration-300 md:px-20 ${outfit.className}`}
     >
-      {/* ── Left: Navigation Links (desktop only) ── */}
-      <div className="hidden md:flex flex-1 gap-8 items-center text-xs uppercase tracking-[0.15em] font-medium">
-        <Link
-          href="/products"
-          className={cn(
-            'transition-colors hover:text-black duration-300',
-            pathname.startsWith('/products')
-              ? 'text-black border-b border-black pb-1'
-              : 'text-[#444748]'
-          )}
-        >
-          Archive
-        </Link>
-        <Link
-          href="/categories"
-          className={cn(
-            'transition-colors hover:text-black duration-300',
-            pathname === '/categories'
-              ? 'text-black border-b border-black pb-1'
-              : 'text-[#444748]'
-          )}
-        >
-          Curation
-        </Link>
+      <div className="hidden flex-1 items-center gap-8 md:flex">
+        {navLinks.map((item) => {
+          const isActive = item.active(pathname);
+
+          return (
+            <Link
+              key={item.label}
+              href={item.href}
+              className={cn(
+                'text-[12px] font-medium uppercase leading-none tracking-[0.15em] transition-colors duration-300 hover:text-black',
+                isActive ? 'border-b border-black pb-1 text-black' : 'text-[#444748]'
+              )}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
       </div>
 
-      {/* ── Center: Brand Logo ── */}
-      <div className="flex-1 md:flex-none flex justify-start md:justify-center">
+      <div className="flex flex-1 justify-start md:flex-none md:justify-center">
         <Link
           href="/"
-          className={`${playfair.className} text-3xl md:text-4xl tracking-tighter text-black hover:opacity-70 transition-opacity duration-200`}
+          className={`${playfair.className} text-[40px] font-normal leading-none tracking-normal text-black transition-opacity duration-200 hover:opacity-70 md:text-[52px]`}
         >
-          MODERNSTORE
+          VESTIGE
         </Link>
       </div>
 
-      {/* ── Right: Icon Actions ── */}
-      {/* Order: Search | Wishlist | Cart | User/Login | (mobile) Menu */}
-      <div className="flex flex-1 justify-end gap-0.5 md:gap-1 items-center text-black">
-
-        {/* Search — desktop only */}
-        <Link
-          href="/search"
-          aria-label="Search"
-          className="hidden md:flex hover:opacity-70 transition-opacity duration-300 items-center justify-center p-2"
-        >
-          <Search className="h-5 w-5 stroke-[1.5]" />
-        </Link>
-
-        {/* Wishlist — always visible, filled when active */}
-        <Link
-          href="/wishlist"
-          aria-label="Wishlist"
-          className="hover:opacity-70 transition-opacity duration-300 flex items-center justify-center p-2"
-        >
-          <Heart
-            className={cn(
-              'h-5 w-5 stroke-[1.5] transition-all duration-200',
-              pathname === '/wishlist' ? 'fill-black' : ''
-            )}
-          />
-        </Link>
-
-        {/* Shopping Bag with item count badge */}
+      <div className="flex flex-1 items-center justify-end gap-2 text-black">
         <Link
           href="/cart"
           aria-label="Shopping bag"
-          className="relative hover:opacity-70 transition-opacity duration-300 flex items-center justify-center p-2"
+          className="relative flex items-center justify-center p-2 transition-opacity duration-300 hover:opacity-70"
         >
-          <ShoppingBag className="h-5 w-5 stroke-[1.5]" />
+          <ShoppingBag className="h-5 w-5" strokeWidth={1.4} />
           {totalItems > 0 && (
-            <Badge className="absolute -top-0.5 -right-0.5 h-4 w-4 flex items-center justify-center p-0 text-[9px] bg-black text-white border-none rounded-full">
+            <Badge className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full border-none bg-black p-0 text-[9px] text-white">
               {totalItems}
             </Badge>
           )}
         </Link>
 
-        {/* User dropdown (authenticated) or Sign-In icon */}
         {isAuthenticated ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button
+                type="button"
                 aria-label="Account"
-                className="hover:opacity-70 transition-opacity duration-300 flex items-center justify-center p-2 cursor-pointer outline-none"
+                className="hidden items-center justify-center p-2 transition-opacity duration-300 hover:opacity-70 md:flex"
               >
-                <UserIcon className="h-5 w-5 stroke-[1.5]" />
+                <UserIcon className="h-5 w-5" strokeWidth={1.4} />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="end"
-              className="w-56 bg-[#fbf9f5] border-[#c4c7c7]/30 rounded-none shadow-xl"
-            >
+            <DropdownMenuContent align="end" className="w-56 rounded-none border-[#c4c7c7]/30 bg-[#fbf9f5] shadow-xl">
               <DropdownMenuLabel>
-                <div className="flex flex-col space-y-1">
+                <div className="flex flex-col gap-1">
                   <p className="text-sm font-medium leading-none">{user?.name}</p>
                   <p className="text-xs leading-none text-[#444748]">{user?.email}</p>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator className="bg-[#c4c7c7]/30" />
-
-              <DropdownMenuItem asChild className="rounded-none focus:bg-[#efeeea] cursor-pointer">
+              <DropdownMenuItem asChild className="cursor-pointer rounded-none focus:bg-[#efeeea]">
                 <Link href="/account/profile">
-                  <UserIcon className="mr-2 h-4 w-4 stroke-[1.5]" />
+                  <UserIcon className="mr-2 h-4 w-4" strokeWidth={1.5} />
                   <span>Profile</span>
                 </Link>
               </DropdownMenuItem>
-
-              <DropdownMenuItem asChild className="rounded-none focus:bg-[#efeeea] cursor-pointer">
+              <DropdownMenuItem asChild className="cursor-pointer rounded-none focus:bg-[#efeeea]">
                 <Link href="/account/orders">
-                  <Package className="mr-2 h-4 w-4 stroke-[1.5]" />
+                  <Package className="mr-2 h-4 w-4" strokeWidth={1.5} />
                   <span>My Orders</span>
                 </Link>
               </DropdownMenuItem>
-
-              <DropdownMenuItem asChild className="rounded-none focus:bg-[#efeeea] cursor-pointer">
+              <DropdownMenuItem asChild className="cursor-pointer rounded-none focus:bg-[#efeeea]">
                 <Link href="/account/addresses">
-                  <MapPin className="mr-2 h-4 w-4 stroke-[1.5]" />
+                  <MapPin className="mr-2 h-4 w-4" strokeWidth={1.5} />
                   <span>Addresses</span>
                 </Link>
               </DropdownMenuItem>
-
               {(user?.role === 'admin' || user?.role === 'manager') && (
-                <DropdownMenuItem asChild className="rounded-none focus:bg-[#efeeea] cursor-pointer">
+                <DropdownMenuItem asChild className="cursor-pointer rounded-none focus:bg-[#efeeea]">
                   <Link href="/admin">
-                    <Settings className="mr-2 h-4 w-4 stroke-[1.5]" />
+                    <Settings className="mr-2 h-4 w-4" strokeWidth={1.5} />
                     <span>Admin</span>
                   </Link>
                 </DropdownMenuItem>
               )}
-
               <DropdownMenuSeparator className="bg-[#c4c7c7]/30" />
-              <DropdownMenuItem
-                onClick={logout}
-                className="text-red-600 focus:text-red-600 focus:bg-red-50 rounded-none cursor-pointer"
-              >
-                <LogOut className="mr-2 h-4 w-4 stroke-[1.5]" />
+              <DropdownMenuItem onClick={logout} className="cursor-pointer rounded-none text-red-600 focus:bg-red-50 focus:text-red-600">
+                <LogOut className="mr-2 h-4 w-4" strokeWidth={1.5} />
                 <span>Log out</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -198,20 +148,35 @@ const Navbar = () => {
         ) : (
           <Link
             href="/login"
-            aria-label="Sign in"
-            className="hover:opacity-70 transition-opacity duration-300 flex items-center justify-center p-2"
+            aria-label="Account"
+            className="hidden items-center justify-center p-2 transition-opacity duration-300 hover:opacity-70 md:flex"
           >
-            <LogIn className="h-5 w-5 stroke-[1.5]" />
+            <UserIcon className="h-5 w-5" strokeWidth={1.4} />
           </Link>
         )}
 
-        {/* Mobile hamburger */}
-        <button
-          aria-label="Menu"
-          className="md:hidden hover:opacity-70 transition-opacity duration-300 flex items-center justify-center p-2"
-        >
-          <Menu className="h-5 w-5 stroke-[1.5]" />
-        </button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              type="button"
+              aria-label="Menu"
+              className="flex items-center justify-center p-2 transition-opacity duration-300 hover:opacity-70 md:hidden"
+            >
+              <Menu className="h-5 w-5" strokeWidth={1.4} />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48 rounded-none border-[#c4c7c7]/30 bg-[#fbf9f5]">
+            {navLinks.map((item) => (
+              <DropdownMenuItem key={item.label} asChild className="cursor-pointer rounded-none focus:bg-[#efeeea]">
+                <Link href={item.href}>{item.label}</Link>
+              </DropdownMenuItem>
+            ))}
+            <DropdownMenuSeparator className="bg-[#c4c7c7]/30" />
+            <DropdownMenuItem asChild className="cursor-pointer rounded-none focus:bg-[#efeeea]">
+              <Link href={isAuthenticated ? '/account/profile' : '/login'}>Account</Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </nav>
   );

@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { X, MessageCircle, Send, Bot, User, Loader2, Sparkles, RotateCcw } from 'lucide-react';
 import { Outfit } from 'next/font/google';
+import { usePathname } from 'next/navigation';
 
 const outfit = Outfit({ subsets: ['latin'] });
 
@@ -90,6 +91,7 @@ function formatInline(text: string): React.ReactNode {
 }
 
 export default function ChatWidget() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
@@ -113,7 +115,7 @@ export default function ChatWidget() {
         {
           role: 'assistant',
           content:
-            "Hello! I'm the **ModernStore AI Assistant**. I'm here to help you discover our curated collection, answer questions about your orders, or guide you through anything on our site.\n\nWhat can I help you with today?",
+            "Hello! I'm the **VESTIGE AI Assistant**. I'm here to help you discover our curated collection, answer questions about your orders, or guide you through anything on our site.\n\nWhat can I help you with today?",
         },
       ]);
     }
@@ -178,13 +180,17 @@ export default function ChatWidget() {
       {
         role: 'assistant',
         content:
-          "Hello! I'm the **ModernStore AI Assistant**. I'm here to help you discover our curated collection, answer questions about your orders, or guide you through anything on our site.\n\nWhat can I help you with today?",
+          "Hello! I'm the **VESTIGE AI Assistant**. I'm here to help you discover our curated collection, answer questions about your orders, or guide you through anything on our site.\n\nWhat can I help you with today?",
       },
     ]);
     setInput('');
   };
 
   const showSuggestions = messages.length <= 1 && !isLoading;
+
+  if (pathname === '/') {
+    return null;
+  }
 
   return (
     <>
@@ -241,7 +247,7 @@ export default function ChatWidget() {
               <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 bg-emerald-400 rounded-full border-2 border-black" />
             </div>
             <div>
-              <p className="text-sm font-semibold tracking-wide">ModernStore AI</p>
+              <p className="text-sm font-semibold tracking-wide">VESTIGE AI</p>
               <p className="text-[10px] text-white/60 uppercase tracking-[0.12em]">Always here to help</p>
             </div>
           </div>
@@ -337,7 +343,7 @@ export default function ChatWidget() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Ask about our products, orders…"
+              placeholder="Ask about our products, orders..."
               rows={1}
               disabled={isLoading}
               className="
@@ -378,7 +384,7 @@ export default function ChatWidget() {
             </button>
           </div>
           <p className="text-[10px] text-[#747878] text-center mt-2 tracking-wide">
-            Powered by AI · ModernStore © 2025
+            Powered by AI - VESTIGE
           </p>
         </div>
       </div>

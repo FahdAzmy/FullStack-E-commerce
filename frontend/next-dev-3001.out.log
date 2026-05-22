@@ -1,0 +1,18 @@
+
+> frontend@0.1.0 dev
+> next dev --hostname 127.0.0.1 --port 3001
+
+▲ Next.js 16.1.0 (Turbopack)
+- Local:         http://127.0.0.1:3001
+- Network:       http://127.0.0.1:3001
+- Environments: .env.local
+
+✓ Starting...
+✓ Ready in 3.8s
+○ Compiling / ...
+ HEAD / 200 in 14.5s (compile: 11.0s, render: 3.5s)
+ GET / 200 in 14.6s (compile: 11.2s, render: 3.4s)
+✓ Compiled in 2.6s
+ GET / 200 in 4.7s (compile: 2.2s, render: 2.5s)
+✓ Compiled in 1304ms
+ GET / 200 in 3.2s (compile: 1298ms, render: 1947ms)

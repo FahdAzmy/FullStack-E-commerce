@@ -5,8 +5,8 @@ import { Toaster } from "@/components/ui/sonner";
 import ChatWidget from "@/components/ui/ChatWidget";
 
 export const metadata = {
-  title: "ModernStore | Your One-Stop Shop",
-  description: "Experience the best online shopping with ModernStore.",
+  title: "VESTIGE | The Art of Living",
+  description: "Objects and garments selected with an editorial eye for craft, material, and permanence.",
 };
 
 export default function RootLayout({

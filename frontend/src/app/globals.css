@@ -136,10 +136,21 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   * {
     @apply border-border;
   }
+
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply text-foreground font-sans;
+    background: #fbf9f5;
+  }
+
+  ::selection {
+    background: #1c1b1b;
+    color: #858383;
   }
 }
